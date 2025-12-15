@@ -1,0 +1,13 @@
+apply plugin: 'com.android.library'
+apply plugin: 'kotlin-android'
+
+ext {
+    extName = 'ManhwaRead'
+    pkgNameSuffix = 'en.sourcex'
+    extClass = '.SourceX'
+    extVersionCode = 1
+}
+
+dependencies {
+    implementation project(':lib-madara')
+}
