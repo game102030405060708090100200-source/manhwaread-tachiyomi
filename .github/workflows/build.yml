@@ -12,17 +12,31 @@ jobs:
         with:
           java-version: '17'
           distribution: temurin
-      - run: git clone --depth 1 https://github.com/tachiyomiorg/tachiyomi-extensions.git
+      - run: git clone --depth 1 https://github.com/tachiyomiorg/tachiyomi-extensions.git tachiyomi-extensions
       - run: |
           cd tachiyomi-extensions
           mkdir -p src/en/sourcex
-          echo 'package eu.kanade.tachiyomiorg.extension.en.sourcex
+          printf 'package eu.kanade.tachiyomiorg.extension.en.sourcex
 import eu.kanade.tachiyomi.extension.en.madara.Madara
-class SourceX : Madara(name="ManhwaRead",baseUrl="https://manhwaread.com",lang="en",dateFormat="MMM d, yyyy"){override val useLoadMoreRequest=true}' > src/en/sourcex/SourceX.kt
-          echo 'apply plugin:"com.android.library"
-apply plugin:"kotlin-android"
-ext{extName="ManhwaRead",pkgNameSuffix="en.sourcex",extClass=".SourceX",extVersionCode=1}
-dependencies{implementation project(":lib-madara")}' > src/en/sourcex/build.gradle
+class SourceX : Madara(
+    name = "ManhwaRead",
+    baseUrl = "https://manhwaread.com",
+    lang = "en",
+    dateFormat = "MMM d, yyyy"
+) {
+    override val useLoadMoreRequest = true
+}' > src/en/sourcex/SourceX.kt
+          printf 'apply plugin: "com.android.library"
+apply plugin: "kotlin-android"
+ext {
+    extName = "ManhwaRead"
+    pkgNameSuffix = "en.sourcex"
+    extClass = ".SourceX"
+    extVersionCode = 1
+}
+dependencies {
+    implementation project(":lib-madara")
+}' > src/en/sourcex/build.gradle
           chmod +x gradlew
           ./gradlew assembleDebug
       - uses: actions/upload-artifact@v4
