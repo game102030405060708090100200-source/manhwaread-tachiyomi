@@ -8,25 +8,25 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-    
+
     steps:
-    - uses: actions/checkout@v4
-    
-    - name: Set up JDK 17
-      uses: actions/setup-java@v4
-      with:
-        java-version: '17'
-        distribution: 'temurin'
-    
-    - name: Clone Tachiyomi Extensions
-      run: |
-        git clone --depth 1 https://github.com/tachiyomiorg/tachiyomi-extensions.git tachiyomi-extensions
-    
-    - name: Setup Source Files
-      run: |
-        cd tachiyomi-extensions
-        mkdir -p src/en/sourcex
-        cat > src/en/sourcex/SourceX.kt << 'EOF'
+      - uses: actions/checkout@v4
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+
+      - name: Clone Tachiyomi Extensions
+        run: |
+          git clone --depth 1 https://github.com/tachiyomiorg/tachiyomi-extensions.git tachiyomi-extensions
+
+      - name: Setup Source Files
+        run: |
+          cd tachiyomi-extensions
+          mkdir -p src/en/sourcex
+          cat > src/en/sourcex/SourceX.kt << 'EOF'
 package eu.kanade.tachiyomiorg.extension.en.sourcex
 
 import eu.kanade.tachiyomi.extension.en.madara.Madara
@@ -41,7 +41,7 @@ class SourceX : Madara(
 }
 EOF
 
-        cat > src/en/sourcex/build.gradle << 'EOF'
+          cat > src/en/sourcex/build.gradle << 'EOF'
 apply plugin: 'com.android.library'
 apply plugin: 'kotlin-android'
 
@@ -56,20 +56,20 @@ dependencies {
     implementation project(':lib-madara')
 }
 EOF
-    
-    - name: Make gradlew executable
-      run: |
-        cd tachiyomi-extensions
-        chmod +x gradlew
-    
-    - name: Build APK
-      run: |
-        cd tachiyomi-extensions
-        ./gradlew assembleDebug
-    
-    - name: Upload APK Artifact
-      uses: actions/upload-artifact@v4
-      with:
-        name: manhwaread-extension-apk
-        path: tachiyomi-extensions/app/build/outputs/apk/debug/app-debug.apk
-        retention-days: 30
+
+      - name: Make gradlew executable
+        run: |
+          cd tachiyomi-extensions
+          chmod +x gradlew
+
+      - name: Build APK
+        run: |
+          cd tachiyomi-extensions
+          ./gradlew assembleDebug
+
+      - name: Upload APK Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: manhwaread-extension-apk
+          path: tachiyomi-extensions/app/build/outputs/apk/debug/app-debug.apk
+          retention-days: 30
